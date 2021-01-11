@@ -19,26 +19,39 @@
             android:value="@string/kakao_app_key" />
 
         <activity
-            android:name=".MainActivity"
+            android:name=".login.LoginActivity"
             android:label="@string/app_name"
+            android:launchMode="singleTask"
             android:theme="@style/Theme.TestApplication.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
+
+        <activity android:name=".login.SecondActivity" />
+
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.TestApplication.NoActionBar">
+        </activity>
+
+
+        <!--
         <activity android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <!-- Redirect URI: "kakao{NATIVE_APP_KEY}://oauth“ -->
+                &lt;!&ndash; Redirect URI: "kakao{NATIVE_APP_KEY}://oauth“ &ndash;&gt;
                 <data android:host="oauth" android:scheme="kakao549bc7e3aff5a37f9733fc66058f7953" />
             </intent-filter>
         </activity>
+        -->
+
 
     </application>
 

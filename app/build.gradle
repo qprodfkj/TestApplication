@@ -55,5 +55,5 @@ dependencies {
     implementation 'com.jakewharton:butterknife:10.2.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
 
-    implementation "com.kakao.sdk:v2-user:2.2.0" // 카카오 로그인
+    implementation group: 'com.kakao.sdk', name: 'usermgmt', version: '1.30.4'
 }

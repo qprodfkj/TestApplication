@@ -9,10 +9,7 @@ import android.os.Bundle;
 import com.example.testapplication.util.L;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-import com.kakao.sdk.auth.LoginClient;
-import com.kakao.sdk.user.UserApiClient;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.util.Base64;
@@ -121,6 +118,7 @@ public class MainActivity extends BaseActivity {
                 });
                  */
 
+                /*
                 LoginClient.getInstance().loginWithKakaoAccount(mContext, (token, loginError) -> {
                     if(loginError != null){
                         L.e(TAG, "로그인 실패 - " + loginError);
@@ -138,6 +136,7 @@ public class MainActivity extends BaseActivity {
                     }
                     return null;
                 });
+                */
 
                 break;
         }
