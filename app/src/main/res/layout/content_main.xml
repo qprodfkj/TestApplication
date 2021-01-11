@@ -30,6 +30,7 @@
 
         <Button
             android:id="@+id/btnLoginNaver"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:text="네이버 계정으로 체크인"

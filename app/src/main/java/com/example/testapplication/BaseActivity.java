@@ -1,6 +1,7 @@
 package com.example.testapplication;
 
 import android.app.Activity;
+import android.os.Bundle;
 
 import androidx.annotation.LayoutRes;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +14,12 @@ public class BaseActivity extends AppCompatActivity {
 
     private static final String TAG = BaseActivity.class.getSimpleName();
     protected Activity mActivity;
+
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        L.d(TAG, "onCreate()");
+        mActivity = this;
+    }
 
     @Override
     public void setContentView(@LayoutRes int layoutResID) {

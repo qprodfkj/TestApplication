@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.testapplication"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -28,6 +28,18 @@ android {
     }
 }
 
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        maven{
+            url "https://maven.google.com"
+        }
+        /*카카오*/
+        maven { url 'https://devrepo.kakao.com/nexus/content/groups/public/' }
+    }
+}
+
 dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
@@ -42,4 +54,6 @@ dependencies {
     //Butter Knife
     implementation 'com.jakewharton:butterknife:10.2.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
+
+    implementation "com.kakao.sdk:v2-user:2.2.0" // 카카오 로그인
 }

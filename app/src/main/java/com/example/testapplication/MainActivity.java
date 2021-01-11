@@ -1,5 +1,6 @@
 package com.example.testapplication;
 
+import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -8,6 +9,8 @@ import android.os.Bundle;
 import com.example.testapplication.util.L;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.kakao.sdk.auth.LoginClient;
+import com.kakao.sdk.user.UserApiClient;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -32,6 +35,7 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.fab) FloatingActionButton fab;
     @BindView(R.id.btnLoginKaKao) Button btnLoginKaKao;
     @BindView(R.id.btnLoginNaver) Button btnLoginNaver;
+    private Context mContext;
 
 
     @Override
@@ -40,6 +44,7 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         //Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        mContext = this;
 
         //FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -50,7 +55,7 @@ public class MainActivity extends BaseActivity {
             }
         });
 
-        getAppKeyHash();
+        //getAppKeyHash();
     }
 
     private void getAppKeyHash() {
@@ -96,6 +101,44 @@ public class MainActivity extends BaseActivity {
         switch(view.getId()){
             case R.id.btnLoginKaKao:
                 L.d(TAG, "카카오 클릭");
+                /*
+                LoginClient.getInstance().loginWithKakaoTalk(mContext, (token, loginError) -> {
+                    if(loginError != null){
+                        L.e(TAG, "로그인 실패 - " + loginError);
+                    }else{
+                        L.d(TAG, "로그인 성공");
+
+                        UserApiClient.getInstance().me((user, meError) ->{
+                            if(meError != null){
+                                L.e(TAG, "사용자 정보 요청 실패 - " + meError);
+                            }else{
+                                L.i(TAG, user.toString());
+                            }
+                            return null;
+                        });
+                    }
+                    return null;
+                });
+                 */
+
+                LoginClient.getInstance().loginWithKakaoAccount(mContext, (token, loginError) -> {
+                    if(loginError != null){
+                        L.e(TAG, "로그인 실패 - " + loginError);
+                    }else{
+                        L.d(TAG, "로그인 성공 token - " + token);
+
+                        UserApiClient.getInstance().me((user, meError) ->{
+                            if(meError != null){
+                                L.e(TAG, "사용자 정보 요청 실패 - " + meError);
+                            }else{
+                                L.i(TAG, user.toString());
+                            }
+                            return null;
+                        });
+                    }
+                    return null;
+                });
+
                 break;
         }
 
