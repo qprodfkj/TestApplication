@@ -47,11 +47,8 @@ public class SecondActivity extends AppCompatActivity {
 
         initView();
 
-
         btnSecondLogout.setOnClickListener(mLogoutListener);
         btnSecondResign.setOnClickListener(mResignListener);
-
-        testAuth();
     }
 
     Button.OnClickListener mLogoutListener = new Button.OnClickListener() {
@@ -82,52 +79,9 @@ public class SecondActivity extends AppCompatActivity {
     public void directToMainActivity(Boolean result) {
         L.d(TAG, "directToMainActivity result : " + result);
         Intent intent = new Intent(SecondActivity.this, LoginActivity.class);
-//        if (result) {
-//            Toast.makeText(getApplicationContext(), "성공!", Toast.LENGTH_SHORT).show();
-//        } else {
-//            Toast.makeText(getApplicationContext(), "실패! 다시 로그인해주세요.", Toast.LENGTH_SHORT).show();
-//        }
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
-    }
-
-    public void testAuth(){
-        AccessToken accessToken = Session.getCurrentSession().getTokenInfo();
-
-        L.d("KAKAO_API", "accessToken : " + accessToken.getAccessToken());
-        L.d("KAKAO_API", "refreshToken : " + accessToken.getRefreshToken());
-
-        AccessTokenCallback accessTokenCallback = new AccessTokenCallback() {
-            @Override
-            public void onAccessTokenReceived(AccessToken accessToken) {
-                L.d("KAKAO_API", "onAccessTokenReceived");
-            }
-
-            @Override
-            public void onAccessTokenFailure(ErrorResult errorResult) {
-                L.d("KAKAO_API", "onAccessTokenFailure");
-            }
-        };
-
-
-        AuthService.getInstance().requestAccessTokenInfo(new ApiResponseCallback<AccessTokenInfoResponse>() {
-            @Override
-            public void onSessionClosed(ErrorResult errorResult) {
-                L.e("KAKAO_API", "세션이 닫혀 있음: " + errorResult);
-            }
-
-            @Override
-            public void onFailure(ErrorResult errorResult) {
-                L.e("KAKAO_API", "토큰 정보 요청 실패: " + errorResult);
-            }
-
-            @Override
-            public void onSuccess(AccessTokenInfoResponse result) {
-                L.i("KAKAO_API", "사용자 아이디: " + result.getUserId());
-                L.i("KAKAO_API", "남은 시간(s): " + result.getExpiresIn());;
-            }
-        });
     }
 
 

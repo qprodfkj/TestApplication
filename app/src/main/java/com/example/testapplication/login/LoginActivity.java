@@ -1,6 +1,8 @@
 package com.example.testapplication.login;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,7 +14,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.testapplication.MainActivity;
 import com.example.testapplication.R;
 import com.example.testapplication.auth.KakaoAuth.KakaoSessionCallback;
+import com.example.testapplication.common.Constant;
 import com.example.testapplication.util.L;
+import com.example.testapplication.util.SSharedPrefHelper;
 import com.kakao.auth.Session;
 import com.kakao.usermgmt.LoginButton;
 
@@ -35,14 +39,25 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
-        if (!HasKakaoSession()) {
-            sessionCallback = new KakaoSessionCallback(getApplicationContext(), LoginActivity.this);
-            Session.getCurrentSession().addCallback(sessionCallback);
-        } else if (HasKakaoSession()) {
-            sessionCallback = new KakaoSessionCallback(getApplicationContext(), LoginActivity.this);
-            Session.getCurrentSession().addCallback(sessionCallback);
-            Session.getCurrentSession().checkAndImplicitOpen();
+        String authType = SSharedPrefHelper.getSharedData(Constant.PREF.AUTH_TYPE);
+        L.d(TAG, "AUTH_TYPE : " + authType);
+
+        if(Constant.AUTH_TYPE_KAKAO.equals(authType)){
+            //카카오 연동시
+            if (!HasKakaoSession()) {
+                sessionCallback = new KakaoSessionCallback(getApplicationContext(), LoginActivity.this);
+                Session.getCurrentSession().addCallback(sessionCallback);
+            } else if (HasKakaoSession()) {
+                sessionCallback = new KakaoSessionCallback(getApplicationContext(), LoginActivity.this);
+                Session.getCurrentSession().addCallback(sessionCallback);
+                Session.getCurrentSession().checkAndImplicitOpen();
+            }
+        }else if(Constant.AUTH_TYPE_NAVER.equals(authType)){
+            //네이버 연동시
         }
+
+
+
     }
 
     @Override

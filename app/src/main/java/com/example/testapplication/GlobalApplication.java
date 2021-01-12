@@ -14,15 +14,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GlobalApplication extends Application {
-    private static GlobalApplication mInstance = null;
+    private static GlobalApplication globalApplication = null;
     private static List<String> mGlobalUserLoginInfo = new ArrayList<>();
 
-    public static GlobalApplication getGlobalApplicationContext() {
-        if (mInstance == null) {
-            throw new IllegalStateException("This Application does not GlobalApplication");
-        }
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        globalApplication = this;
+        KakaoSDK.init(new KakaoSDKAdapter());
+    }
 
-        return mInstance;
+    public static GlobalApplication getInstance() {
+        return globalApplication;
     }
 
     public static List<String> getGlobalUserLoginInfo() {
@@ -31,14 +34,6 @@ public class GlobalApplication extends Application {
 
     public static void setGlobalUserLoginInfo(List<String> userLoginInfo) {
         mGlobalUserLoginInfo = userLoginInfo;
-    }
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        mInstance = this;
-        KakaoSDK.init(new KakaoSDKAdapter());
-        //KakaoSdk.init(this, getString(R.string.kakao_app_key));
     }
 
     public class KakaoSDKAdapter extends KakaoAdapter{
@@ -78,7 +73,7 @@ public class GlobalApplication extends Application {
             return new IApplicationConfig() {
                 @Override
                 public Context getApplicationContext() {
-                    return GlobalApplication.getGlobalApplicationContext();
+                    return GlobalApplication.getInstance();
                 }
             };
         }

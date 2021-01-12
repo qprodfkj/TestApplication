@@ -5,8 +5,14 @@ import android.content.Context;
 import android.widget.Toast;
 
 import com.example.testapplication.GlobalApplication;
+import com.example.testapplication.common.Constant;
 import com.example.testapplication.login.LoginActivity;
+import com.example.testapplication.login.SecondActivity;
+import com.example.testapplication.util.L;
+import com.example.testapplication.util.SSharedPrefHelper;
 import com.kakao.auth.ISessionCallback;
+import com.kakao.auth.Session;
+import com.kakao.auth.authorization.accesstoken.AccessToken;
 import com.kakao.network.ErrorResult;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.MeV2ResponseCallback;
@@ -17,6 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class KakaoAuth extends Activity {
+    private static final String TAG = KakaoAuth.class.getSimpleName();
+
     public static class KakaoSessionCallback implements ISessionCallback {
         private Context mContext;
         private LoginActivity loginActivity;
@@ -51,6 +59,15 @@ public class KakaoAuth extends Activity {
                     userInfo.add(result.getKakaoAccount().getEmail());
                     GlobalApplication mGlobalHelper = new GlobalApplication();
                     mGlobalHelper.setGlobalUserLoginInfo(userInfo);
+
+                    AccessToken accessToken = Session.getCurrentSession().getTokenInfo();
+
+                    L.d(TAG, "accessToken : " + accessToken.getAccessToken());
+                    L.d(TAG, "refreshToken : " + accessToken.getRefreshToken());
+
+                    SSharedPrefHelper.setSharedData(Constant.PREF.AUTH_TYPE, Constant.AUTH_TYPE_KAKAO);
+                    SSharedPrefHelper.setSharedData(Constant.PREF.AUTH_TOKEN, accessToken.getRefreshToken());
+                    SSharedPrefHelper.setSharedData(Constant.PREF.USER_EMAIL, result.getKakaoAccount().getEmail());
 
                     loginActivity.directToSecondActivity(true);
                 }
