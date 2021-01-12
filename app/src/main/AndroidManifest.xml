@@ -16,11 +16,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TestApplication">
-
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="@string/kakao_app_key" />
-
         <activity
             android:name=".login.LoginActivity"
             android:label="@string/app_name"
@@ -32,8 +30,9 @@
             </intent-filter>
         </activity>
 
-
         <activity android:name=".login.SecondActivity" />
+        <activity android:name=".auth.KakaoAuthActivity" />
+        <activity android:name=".auth.NaverAuthActivity" />
 
         <activity
             android:name=".MainActivity"

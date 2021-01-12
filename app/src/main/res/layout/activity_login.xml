@@ -37,6 +37,14 @@
             android:layout_weight="1"
             android:text="카카오 로그인" />
 
+        <Button
+            android:id="@+id/btn_naver_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            android:layout_weight="1"
+            android:text="네이버 로그인" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -49,6 +57,11 @@
 
         <com.kakao.usermgmt.LoginButton
             android:id="@+id/btn_kakao_login_basic"
+            android:layout_width="0dp"
+            android:layout_height="0dp" />
+
+        <com.nhn.android.naverlogin.ui.view.OAuthLoginButton
+            android:id="@+id/btn_naver_login_basic"
             android:layout_width="0dp"
             android:layout_height="0dp" />
 

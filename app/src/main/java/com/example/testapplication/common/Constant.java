@@ -2,6 +2,11 @@ package com.example.testapplication.common;
 
 public class Constant {
 
+    //naver client id
+    public static final String NAVER_CLIENT_ID = "iE0A_gTYRq7L4beLyd_h";
+    //naver client Secret
+    public static final String NAVER_CLIENT_SECRET = "jcvcxrg3hI";
+
     //auth type
     public static final String AUTH_TYPE_KAKAO = "K";
     public static final String AUTH_TYPE_NAVER = "N";

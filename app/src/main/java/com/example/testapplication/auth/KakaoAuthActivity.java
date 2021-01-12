@@ -7,7 +7,6 @@ import android.widget.Toast;
 import com.example.testapplication.GlobalApplication;
 import com.example.testapplication.common.Constant;
 import com.example.testapplication.login.LoginActivity;
-import com.example.testapplication.login.SecondActivity;
 import com.example.testapplication.util.L;
 import com.example.testapplication.util.SSharedPrefHelper;
 import com.kakao.auth.ISessionCallback;
@@ -22,8 +21,8 @@ import com.kakao.util.exception.KakaoException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KakaoAuth extends Activity {
-    private static final String TAG = KakaoAuth.class.getSimpleName();
+public class KakaoAuthActivity extends Activity {
+    private static final String TAG = KakaoAuthActivity.class.getSimpleName();
 
     public static class KakaoSessionCallback implements ISessionCallback {
         private Context mContext;
