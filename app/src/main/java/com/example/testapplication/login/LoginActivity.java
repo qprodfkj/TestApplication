@@ -10,11 +10,13 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.testapplication.R;
+import com.example.testapplication.auth.GoogleAuthActivity;
 import com.example.testapplication.auth.KakaoAuthActivity.KakaoSessionCallback;
 import com.example.testapplication.auth.NaverAuthActivity;
 import com.example.testapplication.common.Constant;
 import com.example.testapplication.util.L;
 import com.example.testapplication.util.SSharedPrefHelper;
+import com.google.firebase.auth.FirebaseAuth;
 import com.kakao.auth.Session;
 import com.kakao.usermgmt.LoginButton;
 import com.nhn.android.naverlogin.OAuthLogin;
@@ -34,7 +36,9 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.btn_kakao_login_basic) LoginButton mKakaoLoginBtnBasic;
     @BindView(R.id.btn_naver_login) Button mNaverLoginBtn ;
     @BindView(R.id.btn_naver_login_basic) OAuthLoginButton mNaverLoginBtnBasic;
+    @BindView(R.id.btn_google_login) Button mGoogleLoginBtn ;
     private KakaoSessionCallback sessionCallback;
+    private FirebaseAuth mGoogleLoginModule;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,31 +58,9 @@ public class LoginActivity extends AppCompatActivity {
         String authType = SSharedPrefHelper.getSharedData(Constant.PREF.AUTH_TYPE);
         L.d(TAG, "AUTH_TYPE : " + authType);
 
-        /*
-        if(Constant.AUTH_TYPE_KAKAO.equals(authType)){
-            //카카오 연동시
-            if (!HasKakaoSession()) {
-                sessionCallback = new KakaoSessionCallback(getApplicationContext(), LoginActivity.this);
-                Session.getCurrentSession().addCallback(sessionCallback);
-            } else if (HasKakaoSession()) {
-                sessionCallback = new KakaoSessionCallback(getApplicationContext(), LoginActivity.this);
-                Session.getCurrentSession().addCallback(sessionCallback);
-                Session.getCurrentSession().checkAndImplicitOpen();
-            }
-        }else if(Constant.AUTH_TYPE_NAVER.equals(authType)){
-            //네이버 연동시
-            if (!HasNaverSession()) {
-                sessionCallback = new KakaoSessionCallback(getApplicationContext(), LoginActivity.this);
-                Session.getCurrentSession().addCallback(sessionCallback);
-            }else if (HasNaverSession()) {
-                Intent intent = new Intent(LoginActivity.this, NaverAuth.class);
-                startActivity(intent);
-                finish();
-            }
-        }
-        */
+        mGoogleLoginModule = FirebaseAuth.getInstance();
 
-        if (!HasKakaoSession() && !HasNaverSession()) {
+        if (!HasKakaoSession() && !HasNaverSession() && !HasGoogleSession()) {
             sessionCallback = new KakaoSessionCallback(getApplicationContext(), LoginActivity.this);
             Session.getCurrentSession().addCallback(sessionCallback);
         } else if (HasKakaoSession()) {
@@ -86,18 +68,11 @@ public class LoginActivity extends AppCompatActivity {
             Session.getCurrentSession().addCallback(sessionCallback);
             Session.getCurrentSession().checkAndImplicitOpen();
         } else if (HasNaverSession()) {
-            String accessToken = mNaverLoginModule.getAccessToken(getApplicationContext());
-            String refreshToken = mNaverLoginModule.getRefreshToken(getApplicationContext());
-            long expiresAt = mNaverLoginModule.getExpiresAt(getApplicationContext());
-            String tokenType = mNaverLoginModule.getTokenType(getApplicationContext());
-
-            L.i(TAG,"accessToken : "+ accessToken);
-            L.i(TAG,"refreshToken : "+ refreshToken);
-            L.i(TAG,"expiresAt : "+ expiresAt);
-            L.i(TAG,"tokenType : "+ tokenType);
-
-
             Intent intent = new Intent(LoginActivity.this, NaverAuthActivity.class);
+            startActivity(intent);
+            finish();
+        }else if (HasGoogleSession()) {
+            Intent intent = new Intent(LoginActivity.this, GoogleAuthActivity.class);
             startActivity(intent);
             finish();
         }
@@ -124,7 +99,7 @@ public class LoginActivity extends AppCompatActivity {
         Session.getCurrentSession().removeCallback(sessionCallback);
     }
 
-    @OnClick({R.id.btn_kakao_login, R.id.btn_naver_login})
+    @OnClick({R.id.btn_kakao_login, R.id.btn_naver_login, R.id.btn_google_login})
     public void onClickView(View view){
         switch(view.getId()){
             case R.id.btn_kakao_login:
@@ -132,6 +107,11 @@ public class LoginActivity extends AppCompatActivity {
                 break;
             case R.id.btn_naver_login:
                 mNaverLoginBtnBasic.performClick();
+                break;
+            case R.id.btn_google_login:
+                Intent intent = new Intent(LoginActivity.this, GoogleAuthActivity.class);
+                startActivity(intent);
+                finish();
                 break;
         }
     }
@@ -146,6 +126,13 @@ public class LoginActivity extends AppCompatActivity {
     private boolean HasNaverSession() {
         if (OAuthLoginState.NEED_LOGIN.equals(mNaverLoginModule.getState(getApplicationContext())) ||
                 OAuthLoginState.NEED_INIT.equals(mNaverLoginModule.getState(getApplicationContext()))) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean HasGoogleSession() {
+        if (mGoogleLoginModule.getCurrentUser() == null) {
             return false;
         }
         return true;

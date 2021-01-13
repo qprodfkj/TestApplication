@@ -33,6 +33,8 @@
         <activity android:name=".login.SecondActivity" />
         <activity android:name=".auth.KakaoAuthActivity" />
         <activity android:name=".auth.NaverAuthActivity" />
+        <activity android:name=".auth.GoogleAuthActivity" />
+
 
         <activity
             android:name=".MainActivity"

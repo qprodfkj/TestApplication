@@ -3,11 +3,18 @@ package com.example.testapplication.auth;
 import android.content.Context;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import com.example.testapplication.GlobalApplication;
 import com.example.testapplication.common.Constant;
 import com.example.testapplication.login.SecondActivity;
 import com.example.testapplication.util.L;
 import com.example.testapplication.util.SSharedPrefHelper;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.kakao.auth.ApiErrorCode;
 import com.kakao.auth.Session;
 import com.kakao.network.ErrorResult;
@@ -45,6 +52,14 @@ public class GlobalAuthHelper {
                 OAuthLogin.getInstance().logout(context);
                 activity.directToMainActivity(true);
             }
+        } else if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            L.d(TAG, "구글 로그아웃");
+            SSharedPrefHelper.setSharedData(Constant.PREF.AUTH_TYPE, "");
+            SSharedPrefHelper.setSharedData(Constant.PREF.AUTH_TOKEN, "");
+            Context context = GlobalApplication.getInstance().getApplicationContext();
+            FirebaseAuth.getInstance().signOut();
+            GoogleSignIn.getClient(context, GoogleSignInOptions.DEFAULT_SIGN_IN).signOut();
+            activity.directToMainActivity(true);
         }
 
 
@@ -96,6 +111,26 @@ public class GlobalAuthHelper {
                     activity.directToMainActivity(false);
                 }
 
+            }
+        }else if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            // 구글 연동 해제
+            try {
+                FirebaseAuth.getInstance().getCurrentUser().delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            activity.directToMainActivity(true);
+                        }
+                        else {
+                            activity.directToMainActivity(false);
+                        }
+                    }
+                }); // Firebase 인증 해제
+                GoogleSignIn.getClient(context, GoogleSignInOptions.DEFAULT_SIGN_IN).revokeAccess(); // Google 계정 해제
+                SSharedPrefHelper.setSharedData(Constant.PREF.AUTH_TYPE, "");
+                SSharedPrefHelper.setSharedData(Constant.PREF.AUTH_TOKEN, "");
+            } catch (Exception e) {
+                activity.directToMainActivity(false);
             }
         }
 

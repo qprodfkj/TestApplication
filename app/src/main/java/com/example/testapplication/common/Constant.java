@@ -10,6 +10,7 @@ public class Constant {
     //auth type
     public static final String AUTH_TYPE_KAKAO = "K";
     public static final String AUTH_TYPE_NAVER = "N";
+    public static final String AUTH_TYPE_GOOGLE = "G";
 
     /* ============================== */
     /*  Shared Pref key	 	          */

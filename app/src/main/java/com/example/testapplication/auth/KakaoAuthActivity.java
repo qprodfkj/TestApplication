@@ -65,7 +65,7 @@ public class KakaoAuthActivity extends Activity {
                     L.d(TAG, "refreshToken : " + accessToken.getRefreshToken());
 
                     SSharedPrefHelper.setSharedData(Constant.PREF.AUTH_TYPE, Constant.AUTH_TYPE_KAKAO);
-                    SSharedPrefHelper.setSharedData(Constant.PREF.AUTH_TOKEN, accessToken.getRefreshToken());
+                    SSharedPrefHelper.setSharedData(Constant.PREF.AUTH_TOKEN, accessToken.getAccessToken());
                     SSharedPrefHelper.setSharedData(Constant.PREF.USER_EMAIL, result.getKakaoAccount().getEmail());
 
                     loginActivity.directToSecondActivity(true);
